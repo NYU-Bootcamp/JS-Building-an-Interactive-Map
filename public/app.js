@@ -10,6 +10,16 @@ const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     minZoom: '15',
 }).addTo(myMap)
 
+const mbSatellite = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/512/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiYWJsdWVtbGVpdiIsImEiOiJjbGR3Y2JsbG0wNXdtM3BwN2kycmY5MXp2In0.Rkifjm7VC8JoZLNFzmWwjA', {
+    attribution: `&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>`,
+    minZoom: '15',
+}).addTo(myMap)
+
+const mbOutdoors = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v12/tiles/512/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiYWJsdWVtbGVpdiIsImEiOiJjbGR3Y2JsbG0wNXdtM3BwN2kycmY5MXp2In0.Rkifjm7VC8JoZLNFzmWwjA', {
+    attribution: `&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>`,
+    minZoom: '15',
+}).addTo(myMap)
+
 // Create and add a geolocation marker:
 const marker = L.marker([48.87007, 2.346453])
 marker.addTo(myMap).bindPopup('<p1><b>The Hoxton, Paris</b></p1>').openPopup()
@@ -50,27 +60,30 @@ const qS = L.marker([48.869560129483226, 2.3358638645569543],{icon: redPin}).bin
 const gB = L.marker([48.871282159004856, 2.3434818588892714],{icon: redPin}).bindPopup('Grands Boulevards')
 
 // Metro station markers:
-const tour1 = L.marker([48.86395,2.34949],{icon: greenPin}).bindPopup('Cool Tourist Spot')
-const tour2 = L.marker([48.86518,2.34962],{icon: greenPin}).bindPopup('Cool Tourist Spot')
-const tour3 = L.marker([48.86892,2.33430],{icon: greenPin}).bindPopup('Cool Tourist Spot')
-const tour4 = L.marker([48.87064,2.34256],{icon: greenPin}).bindPopup('Cool Tourist Spot')
+const tour1 = L.marker([48.864983, 2.337921],{icon: greenPin}).bindPopup('Jardin du Palais Royal')
+const tour2 = L.marker([48.862855, 2.329322],{icon: greenPin}).bindPopup('Tuileries Garden')
+const tour3 = L.marker([48.876948, 2.346461],{icon: greenPin}).bindPopup('Parc Las Fayette')
+const tour4 = L.marker([48.87923, 2.309017],{icon: greenPin}).bindPopup('Parc Monceau')
+const tour5 = L.marker([48.875593, 2.354266],{icon: greenPin}).bindPopup('Prison Saint-Lazare')
+const tour6 = L.marker([48.866779, 2.355446],{icon: greenPin}).bindPopup('Conservatorie National des Arts et Metiers')
+const tour7 = L.marker([48.866479, 2.345109],{icon: greenPin}).bindPopup('Centre Sportif Jean Dame')
 
-const touristSpots = L.layerGroup([tour1, tour2, tour3, tour4]).addTo(myMap)
-
-
-
+const touristSpots = L.layerGroup([tour1, tour2, tour3, tour4, tour5, tour6, tour7]).addTo(myMap)
 const stations = L.layerGroup([rS, sSD, sentier, bourse, qS, gB]).addTo(myMap)
-
-
-
 
 // Layer Control
 const baseMaps = {
-    "OpenStreetMap": osm
+    "Street Map": osm,
+    "Satellite": mbSatellite,
+    "Outdoors": mbOutdoors
 };
 const overlayMaps = {
     "Stations": stations,
     "Tourist Locations": touristSpots
 };
 
-const layerControl = L.control.layers('', overlayMaps).addTo(myMap);
+const layerControl = L.control.layers(baseMaps, overlayMaps).addTo(myMap);
+
+myMap.on('click', function(ev) {
+    alert(ev.latlng); // ev is an event object (MouseEvent in this case)
+});
